@@ -26,7 +26,9 @@ export class AuthController {
   createClinic(@Body() dto: RegisterDto, @Req() req) {
     dto.role = UserRole.CLINIC;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    dto.parentId = req.user.sub; // 🔥 clinic belongs to superadmin
+    // after the JWT strategy change we map `sub` to `id` so controllers can
+    // consistently reference `req.user.id`.
+    dto.parentId = req.user.id; // 🔥 clinic belongs to superadmin
     return this.authService.register(dto);
   }
 
@@ -36,7 +38,7 @@ export class AuthController {
   createClient(@Body() dto: RegisterDto, @Req() req) {
     dto.role = UserRole.CLIENT;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    dto.parentId = req.user.sub; // 🔥 client belongs to clinic
+    dto.parentId = req.user.id; // 🔥 client belongs to clinic
     return this.authService.register(dto);
   }
 }

@@ -17,6 +17,7 @@ export enum UserRole {
 
 @Entity('users')
 export class User {
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -52,4 +53,10 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @Column({ default: false })
+  isDeleted: boolean;
 }
